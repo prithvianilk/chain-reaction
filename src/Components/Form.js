@@ -15,8 +15,8 @@ const Form = () => {
             <Input placeholder = "SRN" value = {srn} onChange = {(e) => SetSRN(e.target.value)}/>
             <div className = "btn-group">
                 <ButtonGroup spacing={10}>
-                    <Button variantColor="blue" size = "md" onClick = {() => onSubmit(false)}>Boy</Button>
-                    <Button variantColor="pink" size = "md" onClick = {() => onSubmit(true)}>Girl</Button>
+                    <Button variantColor="blue" size = "md" onClick = {() => onSubmit(false)} borderRadius = "28px" padding = "0 25px">Boy</Button>
+                    <Button variantColor="pink" size = "md" onClick = {() => onSubmit(true)} borderRadius = "28px" padding = "0 25px">Girl</Button>
                 </ButtonGroup>
             </div>            
         </form>
