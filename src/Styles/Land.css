@@ -1,0 +1,29 @@
+body {
+    background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/nami.png');
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media (max-width: 600px) {
+    .container {
+        height: 100%;
+    }
+}
+
+@media (max-height: 975px) {
+    .container {
+        height: 100vh;        
+    }
+}
+
+@media (max-height: 600px) {
+    .container {
+        height: 100%;        
+    }
+}

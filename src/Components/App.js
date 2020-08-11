@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import Land from "./Land";
-import { BrowserRouter as Router, Route, HashRouter } from "react-router-dom";
+import { Route, HashRouter } from "react-router-dom";
+
 const App = () => {
   return (
     <HashRouter>
