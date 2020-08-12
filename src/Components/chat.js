@@ -1,194 +1,77 @@
-import React, { Component } from "react";
-import { Link, Heading } from "@chakra-ui/core";
-import { Image, Button } from "@chakra-ui/core";
-import "../Styles/chat.css";
-import "../Styles/Form.css";
-import "../Styles/Land.css";
+import React, { useEffect, useState } from 'react';
+import queryString from 'query-string';
+import io from 'socket.io-client';
+import { Alert, AlertIcon, Heading, Input, List, ListItem } from '@chakra-ui/core';
 
-class SendButton extends Component {
-  render() {
-    return (
-      <div className="send_message" onClick={this.props.handleClick}>
-        <div className="text">send</div>
-      </div>
-    );
-  }
-}
-class MessageTextBoxContainer extends Component {
-  render() {
-    return (
-      <div className="message_input_wrapper">
-        <input
-          id="msg_input"
-          className="message_input"
-          placeholder="Type your messages here..."
-          value={this.props.message}
-          onChange={this.props.onChange}
-          onKeyPress={this.props._handleKeyPress}
-        />
-      </div>
-    );
-  }
-}
+let socket;
 
-class Avartar extends Component {
-  render() {
-    return <div className="avatar" />;
-  }
-}
-class MessageBox extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <li className="message left appeared">
-        <Avartar></Avartar>
-        <div className="text_wrapper">
-          <div className="text">{this.props.message}</div>
-        </div>
-      </li>
-    );
-  }
-}
-class UserMessageBox extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <li className={`message ${this.props.appearance} appeared`}>
-        <Avartar></Avartar>
-        <div className="text_wrapper">
-          <div className="text">{this.props.message}</div>
-        </div>
-      </li>
-    );
-  }
-}
+const Chat = ({ location }) => {
+	const ENDPOINT = 'localhost:5000';
+	const [srn, setSRN] = useState('');
+	const [gender, setGender] = useState('');
+	const [message, setMessage] = useState('');
+	const [messages, setMessages] = useState([]);
 
-class MessagesContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.createBotMessages = this.createBotMessages.bind(this);
-  }
+	useEffect(() => {
+		const { gender, srn } = queryString.parse(location.search);
+		socket = io(ENDPOINT);
 
-  scrollToBottom = () => {
-    var el = this.refs.scroll;
-    el.scrollTop = el.scrollHeight;
-  };
+		setSRN(srn);
+		setGender(gender);
 
-  componentDidMount() {
-    this.scrollToBottom();
-  }
+		socket.emit('join', { srn, gender, roomNumber: 0 }, (error) => {
+			console.log(error);
+		});
 
-  componentDidUpdate() {
-    this.scrollToBottom();
-  }
+		return () => {
+			socket.emit('disconnect');
+			socket.off();
+		}
 
-  createBotMessages() {
-    console.log(this.props.messages);
-    return this.props.messages.map((message, index) => (
-      <UserMessageBox
-        key={index}
-        message={message["message"]}
-        appearance={message["isbotmessage"] ? "left" : "right"}
-      />
-    ));
-  }
+	}, [ENDPOINT, location.search]);
 
-  render() {
-    return (
-      <ul className="messages" ref="scroll">
-        {this.createBotMessages()}
-      </ul>
-    );
-  }
+
+	useEffect(() => {
+		socket.on('message', (message) => {
+			setMessages(messages => [...messages, message]);
+		})
+	}, []);
+
+	const sendMessage = (e) => {
+		e.preventDefault();
+		if (message) {
+			socket.emit('sendMessage', message, () => setMessage(''));
+		}
+	}
+
+	const renderListItem = (message, gender, dex) => {
+		if (gender === undefined) {
+			return (
+				<Alert key = {dex} status="success">
+					<AlertIcon />
+					{message}
+				</Alert>
+			)
+		}
+
+		return (
+			<ListItem key={dex} style={{ color: `${gender === "male" ? '#3182ce' : '#d53f8c'}` }}>
+				{message}
+			</ListItem>
+		)
+	}
+
+	return (
+		<div className="form">
+			<Heading>Chat</Heading>
+			<List>
+				{messages.map(({ message, gender }, dex) => (
+					renderListItem(message, gender, dex)
+				))}
+			</List>
+			<Input value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={(e) => e.key == "Enter" ? sendMessage(e) : null} />
+		</div>
+	)
 }
 
-class ChatApp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { messages: [], current_message: "" };
-    this.handleClick = this.handleClick.bind(this);
-    this._handleKeyPress = this._handleKeyPress.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.addMessageBox = this.addMessageBox.bind(this);
-  }
-
-  addMessageBox(enter = true) {
-    let messages = this.state.messages;
-    let current_message = this.state.current_message;
-    console.log(this.state);
-    if (current_message && enter) {
-      messages = [...messages, { message: current_message }];
-      fetch("http://localhost:5000?message=" + current_message)
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            console.log(result);
-            this.setState({
-              messages: [
-                ...messages,
-                { message: result["message"], isbotmessage: true },
-              ],
-            });
-          },
-          (error) => {
-            //do nothing for now
-          }
-        );
-      current_message = "";
-    }
-    this.setState({
-      current_message: current_message,
-      messages,
-    });
-  }
-
-  handleClick() {
-    this.addMessageBox();
-  }
-
-  onChange(e) {
-    this.setState({
-      current_message: e.target.value,
-    });
-  }
-
-  _handleKeyPress(e) {
-    let enter_pressed = false;
-    if (e.key === "Enter") {
-      enter_pressed = true;
-    }
-    this.addMessageBox(enter_pressed);
-  }
-
-  render() {
-    return (
-      <div className="chatt">
-        <Heading className="convTitle" fontSize="24px" paddingBottom="10px">
-          Chat
-        </Heading>
-        <MessagesContainer messages={this.state.messages}></MessagesContainer>
-        <br />
-        <div className="bottom_wrapper clearfix">
-          <MessageTextBoxContainer
-            _handleKeyPress={this._handleKeyPress}
-            onChange={this.onChange}
-            message={this.state.current_message}
-          ></MessageTextBoxContainer>
-          <Button
-            handleClick={this.handleClick}
-            onClick={this.handleClick}
-            className="send_message"
-          >
-            Send
-          </Button>
-        </div>
-      </div>
-    );
-  }
-}
-
-export default ChatApp;
+export default Chat;
