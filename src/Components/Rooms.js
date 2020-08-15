@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, ListItem, Heading, Divider } from '@chakra-ui/core';
+import { Box, List, ListItem, Heading, Divider, Stack, Badge } from '@chakra-ui/core';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
@@ -43,7 +43,12 @@ const Rooms = ({ location }) => {
                             Room {dex}
                         </div>
                         <div marginLeft="90%">
-                            {room['members'].length} / 2
+                            <Stack isInline>
+                                {members.map(({gender}) => (
+                                    <Badge fontSize = "12.5px" variantColor = {gender === "male" ? 'blue' : 'pink'}>{gender === "male" ? "boy":"girl"}</Badge>
+                                ))}
+                                {members.length === 0 ? (<Badge fontSize = "12.5px">empty</Badge>):""}
+                            </Stack>
                         </div>
                     </div>
                 </ListItem>
