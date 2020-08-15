@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 const Form = () => {
     const [srn, SetSRN] = useState("");
-    
+
     return (
         <div className="form">
             <div className="description">
@@ -49,7 +49,7 @@ const Form = () => {
                         borderRadius="28px"
                         padding="5px 35px"
                     >
-                        <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/chat?srn=${srn}&gender=male`}>
+                        <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=male`}>
                             Boy
                         </Link>
                     </Button>
@@ -60,9 +60,9 @@ const Form = () => {
                         borderRadius="28px"
                         padding="5px 35px"
                     >
-                        <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/chat?srn=${srn}&gender=female`}>
+                        <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=female`}>
                             Girl
-                    </Link>
+                        </Link>
                     </Button>
                 </ButtonGroup>
             </div>

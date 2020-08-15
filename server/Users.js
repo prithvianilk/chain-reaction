@@ -1,7 +1,6 @@
 let Users = [];
-let Rooms = new Array(25);
-
-Rooms.fill({members: []});
+let Rooms = [];
+for(var i = 0; i < 25;i++) Rooms.push({members: []});
 
 const addUser = ({ id, srn, gender, roomNumber}) => {
     if (Users.find((user) => user.srn == srn)) return { error: "SRN is already online." };
@@ -13,8 +12,7 @@ const addUser = ({ id, srn, gender, roomNumber}) => {
     }
     const user = { id, srn, gender, roomNumber };
     Users.push(user);
-    console.log(Users);
-    Rooms[roomNumber].members = [...Rooms[roomNumber].members, user];
+    currRoom.members.push(user);
     return { user };
 }
 
@@ -30,4 +28,6 @@ const getNumberOfUsers = () => {
     return males, females;
 }
 
-module.exports = { addUser, removeUser, getUser, getNumberOfUsers };
+const getRooms = () => Rooms;
+
+module.exports = { addUser, removeUser, getUser, getNumberOfUsers, getRooms };
