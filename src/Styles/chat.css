@@ -5,6 +5,7 @@
   padding: 10px 25px;
   width: 88px;
 }
+
 .box {
   float: right;
   clear: both;
@@ -12,6 +13,7 @@
   overflow-y: scroll;
   box-size: border-box;
 }
+
 #take {
   background-color: #e17f93;
 }

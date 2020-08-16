@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
     Button,
-    ButtonGroup,
+    Box,
     Input,
     InputGroup,
     InputLeftAddon,
@@ -40,32 +40,30 @@ const Form = () => {
                     />
                 </InputGroup>
             </div>
-            <div className="btn-group">
-                <ButtonGroup spacing={10}>
+            <Box display="flex" justifyContent="center" marginTop = "20px">
+                <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=male`}>
                     <Button
                         variantColor="blue"
                         size="md"
-                        onClick={e => e.preventDefault()}
                         borderRadius="28px"
                         padding="5px 35px"
-                    >
-                        <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=male`}>
-                            Boy
-                        </Link>
+                        margin="0 10px"
+                        >
+                        Boy
                     </Button>
+                </Link>
+                <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=female`}>
                     <Button
                         variantColor="pink"
                         size="md"
-                        onClick={e => e.preventDefault()}
                         borderRadius="28px"
                         padding="5px 35px"
+                        margin="0 10px"
                     >
-                        <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=female`}>
-                            Girl
-                        </Link>
+                        Girl
                     </Button>
-                </ButtonGroup>
-            </div>
+                </Link>
+            </Box>
         </div>
     );
 };
