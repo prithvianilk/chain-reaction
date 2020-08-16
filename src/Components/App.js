@@ -1,6 +1,6 @@
 import React from "react";
 import Land from "./Land";
-import Chat from "./Chat2";
+import Chat from "./Chat";
 import { Route, HashRouter } from "react-router-dom";
 import Rooms from "./Rooms";
 
