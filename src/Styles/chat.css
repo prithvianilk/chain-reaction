@@ -11,7 +11,7 @@
   clear: both;
   display: table;
   overflow-y: scroll;
-  box-size: border-box;
+  box-sizing: border-box;
 }
 
 #take {
