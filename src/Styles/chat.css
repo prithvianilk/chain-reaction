@@ -1,0 +1,17 @@
+.text {
+  border-radius: 30px;
+  background-color: #3182ce;
+  list-style: none;
+  padding: 10px 25px;
+  width: 88px;
+}
+.box {
+  float: right;
+  clear: both;
+  display: table;
+  overflow-y: scroll;
+  box-size: border-box;
+}
+#take {
+  background-color: #e17f93;
+}
