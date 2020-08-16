@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
 import { Alert, AlertIcon, Heading, Input, Box, Button } from "@chakra-ui/core";
-import "../Styles/chat.css";
+import "../Styles/Chat.css";
 import "../Styles/Form.css";
 import "../Styles/Land.css";
 let socket;
