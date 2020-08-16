@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, List, ListItem, Heading, Divider, Stack, Badge } from '@chakra-ui/core';
+import { List, ListItem, Heading, Divider } from '@chakra-ui/core';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
