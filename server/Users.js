@@ -1,14 +1,13 @@
 let Users = [];
 let Rooms = [];
-for(var i = 0; i < 25;i++) Rooms.push({members: []});
+for (var i = 0; i < 25; i++) Rooms.push({ members: [] });
 
-const addUser = ({ id, srn, gender, roomNumber}) => {
+const addUser = ({ id, srn, gender, roomNumber }) => {
     if (Users.find((user) => user.srn == srn)) return { error: "SRN is already online." };
     const currRoom = Rooms[roomNumber];
     if (currRoom.members.length > 1) return { error: "Room is Filled." };
-    if(currRoom.members.length === 1)
-    {
-        if(currRoom.members[0].gender === gender) return {error: "Room Member is of the same gender as you."};
+    if (currRoom.members.length === 1) {
+        if (currRoom.members[0].gender === gender) return { error: "Room Member is of the same gender as you." };
     }
     const user = { id, srn, gender, roomNumber };
     Users.push(user);
