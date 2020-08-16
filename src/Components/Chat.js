@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import queryString from "query-string";
 import ChatMessage from './ChatMessage';
 import io from "socket.io-client";
-import { Heading, Divider, Input, Box, Button } from "@chakra-ui/core";
+import { Heading, Divider, Input, InputGroup, InputRightElement, Box, Button } from "@chakra-ui/core";
 import "../Styles/Chat.css";
 let socket;
 
@@ -50,13 +50,18 @@ const Chat = ({ location }) => {
 				<Box style={{ clear: "both" }}>
 					{messages.map((message, dex) => (<ChatMessage message = {message.message} gender = {gender} dex = {dex} userGender = {message.gender}/>))}
 				</Box>
+				<InputGroup>
 				<Input
+					pr="6rem"
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
 					onKeyPress={(e) => (e.key === "Enter" ? sendMessage(message) : null)}
-				/>
+					/>
+					<InputRightElement width="6rem" >
+						<Button h="2rem" onClick={() => sendMessage(message)}>Send</Button>
+					</InputRightElement>
+				</InputGroup>
 			</Box>
-			<Button onClick={() => sendMessage(message)}>Send</Button>
 		</div>
 	)
 }
