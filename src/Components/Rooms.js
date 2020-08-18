@@ -26,12 +26,19 @@ const Rooms = ({ location }) => {
         socket.emit('getRooms', (rooms) => {
             setRooms(rooms);
         });
-
+        
         return () => {
             socket.off();
         }
-
+        
     }, [location.search, ENDPOINT]);
+    
+    useEffect(() => {
+        socket.on('getNewRooms', (rooms) => {
+            setRooms(rooms);
+        })
+    }, []);
+
 
     const handleEnter = (e, noClick, errorMessage) => {
         if (noClick) {

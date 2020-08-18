@@ -1,11 +1,12 @@
 import React from 'react';
 import { Alert, AlertIcon, Box } from '@chakra-ui/core'
 
-const ChatMessage = ({ message, userGender, dex, gender }) => {
+const ChatMessage = ({ message, userGender, dex, gender, type }) => {
     if (userGender === undefined) {
+        console.log(type);
         return (
             <div>
-                <Alert key={dex} status="success" margin="5px 0">
+                <Alert key={dex} status={type} margin="5px 0">
                     <AlertIcon />
                     {message}
                 </Alert>

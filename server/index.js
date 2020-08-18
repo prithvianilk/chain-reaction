@@ -25,8 +25,8 @@ io.on('connection', (socket) => {
         const { error, user } = addUser({ id: socket.id, srn, gender, roomNumber });
         if (error) return callback(error);
         socket.join(user.roomNumber);
-        socket.emit('message', { srn: "admin", message: `Welcome to the room, ${srn}!` });
-        socket.broadcast.to(user.roomNumber).emit('message', { srn: "admin", message: `User ${srn} has entered the room!` });
+        socket.emit('message', { srn: "admin", message: `Welcome to the room, ${srn}!`, type: "success" });
+        socket.broadcast.to(user.roomNumber).emit('message', { srn: "admin", message: `User ${srn} has entered the room!`, type: "success" });
         callback();
     });
 
@@ -36,12 +36,16 @@ io.on('connection', (socket) => {
         callback();
     });
 
-    socket.on('disconnect', () => {
+    socket.on('removeUser', () => {
         const user = getUser(socket.id);
-        // TODO: Add this bottom line.
-        // socket.broadcast.to(user.roomNumber).emit('message', { srn: "admin", message: `User ${srn} has left the room.` });
-        console.log(`User ${user} left :(`);
-        removeUser(socket.id);
+        if (user === undefined) return;
+        const { srn, roomNumber } = user;
+        socket.broadcast.to(roomNumber).emit('message', { srn: "admin", message: `User ${srn} has left the room.`, type: "error" });
+        removeUser(socket.id, roomNumber);
+        console.log(`User ${socket.id} left :(`);
+    })
+
+    socket.on('disconnect', () => {
     });
 });
 

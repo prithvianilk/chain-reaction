@@ -15,8 +15,10 @@ const addUser = ({ id, srn, gender, roomNumber }) => {
     return { user };
 }
 
-const removeUser = (id) => {
+const removeUser = (id, roomNumber) => {
     Users = Users.filter((user) => user.id != id);
+    const currRoom = Rooms[roomNumber];
+    currRoom.members = currRoom.members.filter((user) => user.id !== id);
 }
 
 const getUser = (id) => Users.find((user) => user.id == id);
