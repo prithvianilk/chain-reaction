@@ -40,7 +40,7 @@ const Form = () => {
                     />
                 </InputGroup>
             </div>
-            <Box display="flex" justifyContent="center" marginTop = "20px">
+            <Box display="flex" justifyContent="center" marginTop="20px">
                 <Link onClick={e => (!srn) ? e.preventDefault() : null} to={`/rooms?srn=${srn}&gender=male`}>
                     <Button
                         variantColor="blue"
@@ -48,7 +48,7 @@ const Form = () => {
                         borderRadius="28px"
                         padding="5px 35px"
                         margin="0 10px"
-                        >
+                    >
                         Boy
                     </Button>
                 </Link>

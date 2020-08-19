@@ -59,20 +59,21 @@ const Chat = ({ location }) => {
 			<Divider />
 			<Box>
 				<Box style={{ clear: "both" }}>
-					{messages.map((message, dex) => (<ChatMessage message={message.message} gender={gender} dex={dex} userGender={message.gender} type = {message.type} />))}
+					{messages.map((message, dex) => (<ChatMessage message={message.message} gender={gender} dex={dex} userGender={message.gender} type={message.type} />))}
 				</Box>
-				<InputGroup>
-					<Input
-						pr="6rem"
-						value={message}
-						onChange={(e) => setMessage(e.target.value)}
-						onKeyPress={(e) => (e.key === "Enter" ? sendMessage(message) : null)}
-					/>
-					<InputRightElement width="6rem" >
-						<Button h="2rem" onClick={() => sendMessage(message)}>Send</Button>
-					</InputRightElement>
-				</InputGroup>
 			</Box>
+			<Divider />
+			<InputGroup>
+				<Input
+					pr="6rem"
+					value={message}
+					onChange={(e) => setMessage(e.target.value)}
+					onKeyPress={(e) => (e.key === "Enter" ? sendMessage(message) : null)}
+				/>
+				<InputRightElement width="6rem" >
+					<Button h="2rem" onClick={() => sendMessage(message)}>Send</Button>
+				</InputRightElement>
+			</InputGroup>
 		</div>
 	)
 }

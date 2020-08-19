@@ -24,9 +24,9 @@ const removeUser = (id, roomNumber) => {
 const getUser = (id) => Users.find((user) => user.id == id);
 
 const getNumberOfUsers = () => {
-    const males = Users.filter(user => user.gender == 'male').length;
-    const females = Users.length - males;
-    return males, females;
+    const boys = Users.filter(user => user.gender == 'male').length;
+    const girls = Users.length - boys;
+    return { boys, girls }
 }
 
 const getRooms = () => Rooms;
