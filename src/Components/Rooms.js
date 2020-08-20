@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Button, Divider, Heading, List, ListItem, Stack } from '@chakra-ui/core';
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Badge, Button, Divider, Heading, List, ListItem, Stack, StatGroup, Stat, StatNumber, StatLabel } from '@chakra-ui/core';
 import queryString from 'query-string';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,7 @@ const Rooms = ({ location }) => {
     const [srn, setSRN] = useState('');
     const [gender, setGender] = useState('');
     const [rooms, setRooms] = useState([]);
+    const [userCount, setUserCount] = useState({ boys: 0, girls: 0 });
     const [isOpen, setIsOpen] = useState();
     const [error, setError] = useState({});
     const onClose = () => setIsOpen(false);
@@ -26,16 +27,22 @@ const Rooms = ({ location }) => {
         socket.emit('getRooms', (rooms) => {
             setRooms(rooms);
         });
-        
+
         return () => {
             socket.off();
         }
-        
+
     }, [location.search, ENDPOINT]);
-    
+
     useEffect(() => {
         socket.on('getNewRooms', (rooms) => {
             setRooms(rooms);
+        })
+    }, []);
+
+    useEffect(() => {
+        socket.emit('getNumberOfUsers', (numberOfUsers) => {
+            setUserCount(numberOfUsers);
         })
     }, []);
 
@@ -59,7 +66,7 @@ const Rooms = ({ location }) => {
         if (members.length === 1) {
             if (members[0].gender === gender) {
                 noClick = true;
-                errorMessage = { header: "Cannot join this room", body: `There is already a ${gender === "female" ? "girl":"boy"} in this room. Please choose another room.` };
+                errorMessage = { header: "Cannot join this room", body: `There is already a ${gender === "female" ? "girl" : "boy"} in this room. Please choose another room.` };
             }
         }
         return (
@@ -86,6 +93,18 @@ const Rooms = ({ location }) => {
     return (
         <div className="form">
             <Heading>Rooms</Heading>
+            <Divider />
+            <Heading as = "h4" size = "md" textAlign = "center" margin = "15px 0">Online</Heading>
+            <StatGroup textAlign="center">
+                <Stat>
+                    <StatLabel style={{ color: "#3182ce" }}>Boys</StatLabel>
+                    <StatNumber>{userCount.boys}</StatNumber>
+                </Stat>
+                <Stat>
+                    <StatLabel style={{ color: "#d53f8c" }}>Girls</StatLabel>
+                    <StatNumber>{userCount.girls}</StatNumber>
+                </Stat>
+            </StatGroup>
             <Divider />
             <List>
                 {rooms.map(((room, dex) => renderRoom(room, dex)))}

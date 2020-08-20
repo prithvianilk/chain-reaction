@@ -3,7 +3,7 @@ const socketio = require('socket.io');
 const http = require('http');
 const cors = require('cors');
 const router = require('./router');
-const { addUser, removeUser, getUser, getRooms } = require('./Users');
+const { addUser, removeUser, getUser, getRooms, getNumberOfUsers } = require('./Users');
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -43,6 +43,11 @@ io.on('connection', (socket) => {
         socket.broadcast.to(roomNumber).emit('message', { srn: "admin", message: `User ${srn} has left the room.`, type: "error" });
         removeUser(socket.id, roomNumber);
         console.log(`User ${socket.id} left :(`);
+    })
+
+    socket.on('getNumberOfUsers', (callback) => {
+        const numberOfUsers = getNumberOfUsers() 
+        callback(numberOfUsers);
     })
 
     socket.on('disconnect', () => {
