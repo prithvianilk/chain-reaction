@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 let socket;
 const Rooms = ({ location }) => {
 
-    const ENDPOINT = 'localhost:5000';
+    const ENDPOINT = 'https://chain-reaction-app.herokuapp.com/';
     const [srn, setSRN] = useState('');
     const [gender, setGender] = useState('');
     const [rooms, setRooms] = useState([]);

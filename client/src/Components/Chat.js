@@ -7,7 +7,7 @@ import "../Styles/Chat.css";
 let socket;
 
 const Chat = ({ location }) => {
-	const ENDPOINT = "localhost:5000";
+	const ENDPOINT = "https://chain-reaction-app.herokuapp.com/";
 	const [srn, setSRN] = useState("");
 	const [gender, setGender] = useState("");
 	const [message, setMessage] = useState("");
