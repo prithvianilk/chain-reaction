@@ -10,4 +10,7 @@
 
 ### Made with
 - Frontend: React JS, Chakra UI.
-- Backend: Express, Node, Socket IO.
+- Backend: Socket IO, Express, Node.
+
+
+### Big thanks to [JavaScript Mastery](https://www.youtube.com/watch?v=ZwFA3YMfkoc)! Their Socket IO tutorial was a huge life saver.
