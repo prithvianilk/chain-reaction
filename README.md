@@ -1,6 +1,6 @@
 # Chain Reaction
 
-## [Chain Reaction](https://chain-reaction.netlify.app/) is a blind dating app for university students.
+## [Chain Reaction](https://chain-reaction-khaki.vercel.app/) is a blind dating app for university students.
 
 ### Features
 - Chat with random boys or girls from your university, with complete anonymity.
