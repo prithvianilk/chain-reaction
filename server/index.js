@@ -1,32 +1,45 @@
-const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
-const cors = require('cors');
-const router = require('./router');
-const { addUser, removeUser, getUser, getRooms, getNumberOfUsers } = require('./Users');
+const {
+    addUser,
+    removeUser,
+    getUser,
+    getRooms,
+    getNumberOfUsers,
+} = require('./Users');
 
 const PORT = process.env.PORT || 5000;
-const app = express();
-const server = http.createServer(app);
+const server = http.createServer();
 const io = socketio(server);
 
-app.use(router);
-app.use(cors());
-
 io.on('connection', (socket) => {
-    console.log("We have a connection!");
+    console.log('We have a connection!');
 
     socket.on('getRooms', (callback) => {
         const rooms = getRooms();
         callback(rooms);
-    })
+    });
 
-    socket.on('join', ({ srn, gender, roomNumber }, callback) => {
-        const { error, user } = addUser({ id: socket.id, srn, gender, roomNumber });
+    socket.on('join', ({ UID, gender, roomNumber }, callback) => {
+        console.log(UID);
+        const { error, user } = addUser({
+            id: socket.id,
+            UID,
+            gender,
+            roomNumber,
+        });
         if (error) return callback(error);
         socket.join(user.roomNumber);
-        socket.emit('message', { srn: "admin", message: `Welcome to the room, ${srn}!`, type: "success" });
-        socket.broadcast.to(user.roomNumber).emit('message', { srn: "admin", message: `User ${srn} has entered the room!`, type: "success" });
+        socket.emit('message', {
+            UID: 'admin',
+            message: `Welcome to the room, ${UID}!`,
+            type: 'success',
+        });
+        socket.broadcast.to(user.roomNumber).emit('message', {
+            UID: 'admin',
+            message: `User ${UID} has entered the room!`,
+            type: 'success',
+        });
         callback();
     });
 
@@ -39,20 +52,21 @@ io.on('connection', (socket) => {
     socket.on('removeUser', () => {
         const user = getUser(socket.id);
         if (user === undefined) return;
-        const { srn, roomNumber } = user;
-        socket.broadcast.to(roomNumber).emit('message', { srn: "admin", message: `User ${srn} has left the room.`, type: "error" });
+        const { UID, roomNumber } = user;
+        socket.broadcast.to(roomNumber).emit('message', {
+            UID: 'admin',
+            message: `User ${UID} has left the room.`,
+            type: 'error',
+        });
         removeUser(socket.id, roomNumber);
-        console.log(`User ${socket.id} left :(`);
-    })
+    });
 
     socket.on('getNumberOfUsers', (callback) => {
-        const numberOfUsers = getNumberOfUsers() 
+        const numberOfUsers = getNumberOfUsers();
         callback(numberOfUsers);
-    })
-
-    socket.on('disconnect', () => {
     });
-});
 
+    socket.on('disconnect', () => console.log('disconnected'));
+});
 
 server.listen(PORT, () => console.log(`Server has started on Port ${PORT}`));
